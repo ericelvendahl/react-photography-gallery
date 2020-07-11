@@ -37,10 +37,34 @@ galleryRouter.get("/", (req, res) => {
     });
 });
 
-// PUT Route
+// POST
+galleryRouter.post("/", (req, res) => {
+    console.log(
+      `Server: in GalleryRouter POST. req.body is ${req.body} res.body is ${res.body}. req.body.notes is ${req.body.notes}`
+    );
+    console.log(
+      `${req.body.name}, ${req.body.gender}, ${req.body.age}, ${req.body.ready_for_transfer}, ${req.body.notes}`
+    );
+    let queryString = `INSERT INTO "gallery_items" ("path", "description")
+                      VALUES ('${req.body.path}', '${req.body.description}');`;
+    pool
+      .query(queryString)
+      .then((result) => {
+        console.log(`Server: in GalleryRouter '/' GET. result is ${result}`);
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(`Error is ${err}`);
+        res.sendStatus(500);
+      });
+  });
+
+// PUT Route for likes
 galleryRouter.put("/like/:id/", (req, res) => {
   console.log(req.params);
-  console.log(`Server: in galleryRouter PUT, req.body is ${JSON.stringify(req.body)}`);
+  console.log(
+    `Server: in galleryRouter PUT, req.body is ${JSON.stringify(req.body)}`
+  );
   const queryString = `UPDATE gallery_items SET likes = ${req.body.likes} WHERE id = ${req.params.id}`;
   pool
     .query(queryString)
