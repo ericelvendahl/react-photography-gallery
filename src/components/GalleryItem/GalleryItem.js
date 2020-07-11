@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import "./GalleryItem.css";
 
 class GalleryItem extends Component {
   state = {
@@ -19,12 +20,15 @@ class GalleryItem extends Component {
     this.setState({
       likes: this.state.likes + 1,
     });
-    Axios.put('/gallery/like/' + this.props.thisItem.id, this.state.likes);
+    let dataToSend = {
+      likes: this.state.likes,
+    };
+    Axios.put("/gallery/like/" + this.props.thisItem.id, dataToSend);
   }; // end likeClick
   render() {
     return (
-      <div>
-        <div id="imageArea" onClick={this.imageclick}>
+      <div className="image-area">
+        <div onClick={this.imageclick}>
           {this.state.displayImage ? (
             <img src={this.props.thisItem.path}></img>
           ) : (

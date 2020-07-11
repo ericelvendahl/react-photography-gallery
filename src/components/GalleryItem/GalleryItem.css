@@ -1,0 +1,10 @@
+.image-area {
+  background-color: lightgray;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  padding-left: 2em;
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+  margin: 2px;
+}
