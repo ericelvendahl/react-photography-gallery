@@ -18,14 +18,22 @@ class GalleryItem extends Component {
   likeClick = () => {
     console.log("In likeClick. this.props.thisItem is", this.props.thisItem);
     console.log("In likeClick. this.state.likes is", this.state.likes);
-    this.setState({
-      likes: this.state.likes + 1,
-    });
     let dataToSend = {
-      likes: this.state.likes,
+      likes: this.state.likes + 1,
     };
-    Axios.put("/gallery/like/" + this.props.thisItem.id, dataToSend);
+    this.setState({
+      likes: dataToSend.likes,
+    });
+    Axios.put("/gallery/like/" + this.props.thisItem.id, dataToSend).then(
+      (result) => {
+        console.log(
+          "In updateLikesOnServer after Axios call. this.state.likes is",
+          this.state.likes
+        );
+      }
+    );
   }; // end likeClick
+
   render() {
     return (
       <div className="image-area">

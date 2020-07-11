@@ -18,14 +18,18 @@ const pool = new pg.Pool({
 // GET
 galleryRouter.get("/", (req, res) => {
   console.log(
-    `Server: in galleryRouter GET. req.body is ${req.body} res.body is ${res.body}`
+    `Server: in galleryRouter GET. req.body is ${JSON.stringify(req.body)}`
   );
 
   let queryString = `SELECT * FROM "gallery_items";`;
   pool
     .query(queryString)
     .then((result) => {
-      console.log(`Server: /gallery/ GET worked. result is ${result}`);
+      console.log(
+        `Server: /gallery/ GET worked. result.rows is ${JSON.stringify(
+          result.rows
+        )}`
+      );
       res.send(result.rows);
     })
     .catch((err) => {
@@ -36,7 +40,7 @@ galleryRouter.get("/", (req, res) => {
 // PUT Route
 galleryRouter.put("/like/:id/", (req, res) => {
   console.log(req.params);
-  console.log(`Server: in galleryRouter PUT, req.body is ${req.body}`);
+  console.log(`Server: in galleryRouter PUT, req.body is ${JSON.stringify(req.body)}`);
   const queryString = `UPDATE gallery_items SET likes = ${req.body.likes} WHERE id = ${req.params.id}`;
   pool
     .query(queryString)
