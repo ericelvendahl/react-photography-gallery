@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Axios from "axios";
 
 class GalleryItem extends Component {
   state = {
@@ -18,6 +19,7 @@ class GalleryItem extends Component {
     this.setState({
       likes: this.state.likes + 1,
     });
+    Axios.put('/gallery/like/' + this.props.thisItem.id, this.state.likes);
   }; // end likeClick
   render() {
     return (
@@ -31,7 +33,7 @@ class GalleryItem extends Component {
         </div>
         <h3>Likes: {this.state.likes}</h3>
 
-        <button onClick={this.likeClick}>Like [not implemented]</button>
+        <button onClick={this.likeClick}>Like</button>
         {/* I am text from GalleryItem {JSON.stringify(this.props.thisItem)}
       {console.log("In GalleryItem", this.props.thisItem.description)}
        */}
