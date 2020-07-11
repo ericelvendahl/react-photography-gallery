@@ -17,6 +17,7 @@ class GalleryItem extends Component {
 
   likeClick = () => {
     console.log("In likeClick. this.props.thisItem is", this.props.thisItem);
+    console.log("In likeClick. this.state.likes is", this.state.likes);
     this.setState({
       likes: this.state.likes + 1,
     });
