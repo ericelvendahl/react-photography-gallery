@@ -5,7 +5,7 @@ import Gallery from "../Gallery/Gallery";
 
 class App extends Component {
   state = {
-    galleryData: null,
+    galleryData: [],
   };
   componentDidMount() {
     // get data from server
@@ -14,9 +14,9 @@ class App extends Component {
       url: "/gallery",
     })
       .then((response) => {
-        console.log(`in GET in App`);
+        console.log(`in GET in App. response is`, response);
         this.setState({
-          galleryData: response,
+          galleryData: response.data,
         });
       })
       .catch((err) => {
@@ -30,8 +30,8 @@ class App extends Component {
           <h1 className="App-title">Gallery of my life</h1>
         </header>
         <br />
-        <p>Gallery goes here</p>
-        <img src="images/goat_small.jpg" />
+        {/* <p>Gallery goes here</p>
+        <img src="images/goat_small.jpg" /> */}
         <Gallery galleryData={this.state.galleryData} />
         {/* {JSON.stringify(this.state.galleryData)} */}
       </div>
