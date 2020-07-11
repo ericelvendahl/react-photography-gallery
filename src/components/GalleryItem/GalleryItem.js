@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import "./GalleryItem.css";
 
 class GalleryItem extends Component {
   state = {
@@ -16,15 +17,27 @@ class GalleryItem extends Component {
 
   likeClick = () => {
     console.log("In likeClick. this.props.thisItem is", this.props.thisItem);
-    this.setState({
+    console.log("In likeClick. this.state.likes is", this.state.likes);
+    let dataToSend = {
       likes: this.state.likes + 1,
+    };
+    this.setState({
+      likes: dataToSend.likes,
     });
-    Axios.put('/gallery/like/' + this.props.thisItem.id, this.state.likes);
+    Axios.put("/gallery/like/" + this.props.thisItem.id, dataToSend).then(
+      (result) => {
+        console.log(
+          "In updateLikesOnServer after Axios call. this.state.likes is",
+          this.state.likes
+        );
+      }
+    );
   }; // end likeClick
+
   render() {
     return (
-      <div>
-        <div id="imageArea" onClick={this.imageclick}>
+      <div className="image-area">
+        <div onClick={this.imageclick}>
           {this.state.displayImage ? (
             <img src={this.props.thisItem.path}></img>
           ) : (

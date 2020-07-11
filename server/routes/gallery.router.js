@@ -1,24 +1,84 @@
-const express = require('express');
-const router = express.Router();
-const galleryItems = require('../modules/gallery.data');
+const express = require("express");
+const { Router } = require("express");
+const galleryRouter = express.Router();
 
-// DO NOT MODIFY THIS FILE FOR BASE MODE
+// DB CONNECTION
+// requires
+const pg = require("pg");
+
+// globals
+const pool = new pg.Pool({
+  database: "react_gallery",
+  host: "localhost",
+  port: 5432,
+  max: 15,
+  idleTimeoutMillis: 30000,
+});
+
+// GET
+galleryRouter.get("/", (req, res) => {
+  console.log(
+    `Server: in galleryRouter GET. req.body is ${JSON.stringify(req.body)}`
+  );
+
+  let queryString = `SELECT * FROM "gallery_items";`;
+  pool
+    .query(queryString)
+    .then((result) => {
+      console.log(
+        `Server: /gallery/ GET worked. result.rows is ${JSON.stringify(
+          result.rows
+        )}`
+      );
+      res.send(result.rows);
+    })
+    .catch((err) => {
+      console.log(`We got an error here. It's: ${err}`);
+    });
+});
 
 // PUT Route
-router.put('/like/:id', (req, res) => {
-    console.log(req.params);
-    const galleryId = req.params.id;
-    for(const galleryItem of galleryItems) {
-        if(galleryItem.id == galleryId) {
-            galleryItem.likes += 1;
-        }
-    }
-    res.sendStatus(200);
+galleryRouter.put("/like/:id/", (req, res) => {
+  console.log(req.params);
+  console.log(`Server: in galleryRouter PUT, req.body is ${JSON.stringify(req.body)}`);
+  const queryString = `UPDATE gallery_items SET likes = ${req.body.likes} WHERE id = ${req.params.id}`;
+  pool
+    .query(queryString)
+    .then((results) => {
+      console.log(`Server: results.rows is ${results.rows}`);
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log(`Error is:`, err);
+      console.log("req.params is", req.params);
+      console.log("req.body.likes is", req.body.likes);
+      res.sendStatus(500);
+    });
 }); // END PUT Route
 
-// GET Route
-router.get('/', (req, res) => {
-    res.send(galleryItems);
-}); // END GET Route
+// Old router stuff follows:
 
-module.exports = router;
+// const express = require('express');
+// const router = express.Router();
+// const galleryItems = require('../modules/gallery.data');
+
+// // DO NOT MODIFY THIS FILE FOR BASE MODE
+
+// // PUT Route
+// router.put('/like/:id', (req, res) => {
+//     console.log(req.params);
+//     const galleryId = req.params.id;
+//     for(const galleryItem of galleryItems) {
+//         if(galleryItem.id == galleryId) {
+//             galleryItem.likes += 1;
+//         }
+//     }
+//     res.sendStatus(200);
+// }); // END PUT Route
+
+// // GET Route
+// router.get('/', (req, res) => {
+//     res.send(galleryItems);
+// }); // END GET Route
+
+module.exports = galleryRouter;

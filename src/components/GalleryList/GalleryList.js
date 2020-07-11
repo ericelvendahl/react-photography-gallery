@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import GalleryItem from '../GalleryItem/GalleryItem';
+import GalleryPost from '../GalleryPost/GalleryPost'
 
 class Gallery extends Component {
   componentDidMount() {
@@ -8,6 +9,7 @@ class Gallery extends Component {
   render() {
     return (
       <div className="Gallery">
+        <GalleryPost />
         I am some text in the Gallery component.
         {/* {this.props.galleryData} */}
         There should be some gallery data below this line
