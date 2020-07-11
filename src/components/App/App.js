@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Axios from "axios";
-import Gallery from "../Gallery/Gallery";
+import Gallery from "../GalleryList/GalleryList";
 
 class App extends Component {
   state = {
