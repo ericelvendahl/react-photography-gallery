@@ -3,7 +3,7 @@ import Axios from "axios";
 
 class GalleryItem extends Component {
   state = {
-    likes: 0,
+    likes: this.props.thisItem.likes,
     displayImage: true,
   };
 
