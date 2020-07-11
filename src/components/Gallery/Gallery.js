@@ -13,7 +13,7 @@ class Gallery extends Component {
         There should be some gallery data below this line
         <br />
         { this.props.galleryData.map( ( item, index )=><GalleryItem thisItem={ item } key={ index }/>)}
-        <br />
+        
         {/* {JSON.stringify(this.props.galleryData)}
         {console.log(this.props.galleryData[1])} */}
 

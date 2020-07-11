@@ -1,15 +1,20 @@
 import React, { Component } from "react";
 
 class GalleryItem extends Component {
-  buttonclick = () =>{
-    console.log("In buttonClick", this.props.thisItem);
+  likeClick = () =>{
+    console.log("In likeClick. this.props.thisItem is", this.props.thisItem);
   }
   render() {
-    return <div className="GalleryItem">
-      <br />
-      I am text from GalleryItem {JSON.stringify(this.props.thisItem)}
+    return <div>
+      <img src={this.props.thisItem.path} />
+      
+      <h2>{this.props.thisItem.description}</h2>
+      
+      <button onClick={this.likeClick}>Like [not implemented]</button>
+      {/* I am text from GalleryItem {JSON.stringify(this.props.thisItem)}
       {console.log("In GalleryItem", this.props.thisItem.description)}
-      <button onClick={this.buttonClick}>Test</button>
+       */}
+       
     </div>;
   }
 }
