@@ -15,6 +15,24 @@ const pool = new pg.Pool({
   idleTimeoutMillis: 30000,
 });
 
+// DELETE
+galleryRouter.delete("/:id", (req, res) => {
+    console.log(
+      `Server: in galleryRouter DELETE. req.body.id is ${req.params.id} `
+    );
+    const queryString = `DELETE FROM gallery_items WHERE id=${req.params.id};`;
+    pool
+      .query(queryString)
+      .then((responses) => {
+        console.log(`Server: delete successful. responses is ${responses}`);
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.log(`Server: Error:`, err);
+        res.sendStatus(500);
+      });
+  });
+
 // GET
 galleryRouter.get("/", (req, res) => {
   console.log(
@@ -37,10 +55,30 @@ galleryRouter.get("/", (req, res) => {
     });
 });
 
-// PUT Route
+// POST
+galleryRouter.post("/", (req, res) => {
+    console.log(
+      `Server: in GalleryRouter POST.`);
+    let queryString = `INSERT INTO "gallery_items" ("path", "description")
+                      VALUES ('${req.body.path}', '${req.body.description}');`;
+    pool
+      .query(queryString)
+      .then((result) => {
+        console.log(`Server: in GalleryRouter '/' GET. result is ${result}`);
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(`Error is ${err}`);
+        res.sendStatus(500);
+      });
+  });
+
+// PUT Route for likes
 galleryRouter.put("/like/:id/", (req, res) => {
   console.log(req.params);
-  console.log(`Server: in galleryRouter PUT, req.body is ${JSON.stringify(req.body)}`);
+  console.log(
+    `Server: in galleryRouter PUT, req.body is ${JSON.stringify(req.body)}`
+  );
   const queryString = `UPDATE gallery_items SET likes = ${req.body.likes} WHERE id = ${req.params.id}`;
   pool
     .query(queryString)
