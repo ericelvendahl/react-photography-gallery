@@ -59,7 +59,8 @@ class GalleryPost extends Component {
   render() {
     return (
       <>
-        <button onClick={this.refreshClicked}>Refreash</button>
+        {/* code for refresh debugging button: */}
+        {/* <button onClick={this.refreshClicked}>Refreash</button> */}
         <h3>Add an image:</h3>
         <form onSubmit={this.handleSubmit}>
           <label>

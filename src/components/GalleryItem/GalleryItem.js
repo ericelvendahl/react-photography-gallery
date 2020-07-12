@@ -6,8 +6,35 @@ class GalleryItem extends Component {
   state = {
     likes: this.props.thisItem.likes,
     displayImage: true,
+    showEdit: false,
+    descriptionEdit: "",
   };
-
+  editClick = () => {
+    console.log("In editClick. this.state.showEdit is", this.state.showEdit);
+    console.log(
+      "In editClick. this.state.descriptionEdit is",
+      this.state.descriptionEdit
+    );
+    this.setState({
+      showEdit: !this.state.showEdit,
+    });
+    if (this.state.descriptionEdit !== "") {
+      // Axios to get and then put
+      console.log("attempting Axios PUT");
+      let dataToSend = {
+        description: this.state.descriptionEdit,
+      };
+      Axios.put("/gallery/description/" + this.props.thisItem.id, dataToSend)
+        .then(function (response) {
+          console.log("PUT successful with response", response);
+        })
+        .catch(function (error) {
+          console.log("Error in put is", error);
+        });
+      // refresh page
+      this.props.refreshData();
+    }
+  };
   deleteItem = () => {
     console.log(JSON.stringify(this.props));
     let theyAreSure = window.confirm(
@@ -17,19 +44,26 @@ class GalleryItem extends Component {
     if (theyAreSure) {
       console.log("They are sure");
       Axios.delete("/gallery/" + this.props.thisItem.id)
-        .then(function response(response) {
+        .then((response) => {
           console.log(`delete successful`);
           theRefresher();
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Delete failed with error", error);
         });
     } else {
       console.log("They cancelled");
     }
-  };
+  }; // end deleteItem
 
-  imageclick = () => {
+  handleChangeFor = (event, propertyName) => {
+    this.setState({
+      ...this.state,
+      [propertyName]: event.target.value,
+    });
+  }; // end handleChangeFor
+
+  imageClick = () => {
     console.log("In imageClick");
     this.setState({
       displayImage: !this.state.displayImage,
@@ -58,7 +92,7 @@ class GalleryItem extends Component {
   render() {
     return (
       <div className="image-area">
-        <div onClick={this.imageclick}>
+        <div onClick={this.imageClick}>
           {this.state.displayImage ? (
             <img src={this.props.thisItem.path} alt="Gallery"></img>
           ) : (
@@ -69,6 +103,20 @@ class GalleryItem extends Component {
 
         <button onClick={this.likeClick}>Like</button>
         <button onClick={this.deleteItem}>Delete</button>
+        {this.state.showEdit ? (
+          <input
+            type="text"
+            placeholder={this.props.thisItem.description}
+            value={this.state.descriptionEdit}
+            onChange={(event) => this.handleChangeFor(event, "descriptionEdit")}
+          ></input>
+        ) : (
+          <h2> </h2>
+        )}
+        {/* Above h2 is dummy text to supress errror */}
+        <button onClick={this.editClick} value={this.descriptionEdit}>
+          Edit Description
+        </button>
         {/* I am text from GalleryItem {JSON.stringify(this.props.thisItem)}
       {console.log("In GalleryItem", this.props.thisItem.description)}
        */}
