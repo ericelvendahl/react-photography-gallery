@@ -43,7 +43,7 @@ class GalleryPost extends Component {
       .catch(function (error) {
         console.log(`Error in POST is `, error);
       });
-    this.props.refreshData();
+
     /// - clear inputs after submission
     this.setState({
       path: "",
