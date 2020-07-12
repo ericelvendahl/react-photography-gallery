@@ -8,6 +8,26 @@ class GalleryItem extends Component {
     displayImage: true,
   };
 
+  deleteItem = () => {
+    console.log(JSON.stringify(this.props));
+    let theyAreSure = window.confirm(
+      "Are you sure you want to remove this picture?"
+    );
+    if (theyAreSure) {
+      console.log("They are sure");
+      Axios.delete("/gallery/" + this.props.thisItem.id)
+        .then(function response(response) {
+          console.log(`delete successful`);
+          this.props.refreshData();
+        })
+        .catch(function (error) {
+          console.log("Delete failed with error", error);
+        });
+    } else {
+      console.log("They cancelled");
+    }
+  };
+
   imageclick = () => {
     console.log("In imageClick");
     this.setState({
@@ -39,7 +59,7 @@ class GalleryItem extends Component {
       <div className="image-area">
         <div onClick={this.imageclick}>
           {this.state.displayImage ? (
-            <img src={this.props.thisItem.path}></img>
+            <img src={this.props.thisItem.path} alt="Gallery"></img>
           ) : (
             <h2>{this.props.thisItem.description}</h2>
           )}
@@ -47,6 +67,7 @@ class GalleryItem extends Component {
         <h3>Likes: {this.state.likes}</h3>
 
         <button onClick={this.likeClick}>Like</button>
+        <button onClick={this.deleteItem}>Delete</button>
         {/* I am text from GalleryItem {JSON.stringify(this.props.thisItem)}
       {console.log("In GalleryItem", this.props.thisItem.description)}
        */}

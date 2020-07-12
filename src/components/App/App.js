@@ -8,6 +8,10 @@ class App extends Component {
     galleryData: [],
   };
   componentDidMount() {
+    this.refreshData();
+  }
+
+refreshData = () => {
     // get data from server
     Axios({
       method: "GET",
@@ -22,7 +26,8 @@ class App extends Component {
       .catch((err) => {
         console.log("Error in GET is", err);
       });
-  }
+}
+
   render() {
     return (
       <div className="App">
@@ -32,7 +37,7 @@ class App extends Component {
         <br />
         {/* <p>Gallery goes here</p>
         <img src="images/goat_small.jpg" /> */}
-        <Gallery galleryData={this.state.galleryData} />
+        <Gallery galleryData={this.state.galleryData} refreshData={this.refreshData}/>
         {/* {JSON.stringify(this.state.galleryData)} */}
       </div>
     );

@@ -26,47 +26,60 @@ class GalleryPost extends Component {
     });
   };
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     alert("A name was submitted: " + this.state.path + this.state.description);
     event.preventDefault();
 
     let dataToSend = {
       path: this.state.path,
-      description: this.state.description
-    }
-    Axios.post("/gallery/", dataToSend).then(function(response){
-      console.log("In GalleryPost Axios POST then", JSON.stringify(response.data));
-    })
+      description: this.state.description,
+    };
+    Axios.post("/gallery/", dataToSend)
+      .then(function (response) {
+        console.log(
+          "In GalleryPost Axios POST then",
+          JSON.stringify(response.data)
+        );
+      })
+      .then(function (response) {
+        console.log("POST successful");
+        this.props.refreshData();
+        console.log(JSON.stringify(this.props));
+      })
+      .catch(function (error) {
+        console.log(`Error in POST is `, error);
+      });
 
     /// - uncomment to clear inputs after submission... maybe do POST above this line
     // this.setState({
     //   path: "",
     //   description: "",
     // });
-  }
+  };
 
   render() {
-    return (<>
-      <h3>Add an image:</h3>
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Path:
-          <input
-            type="text"
-            value={this.state.path}
-            onChange={(event) => this.handleChangeFor(event, "path")}
-          />
-        </label>
-        <label>
-          Description:
-          <input
-            type="text"
-            value={this.state.description}
-            onChange={(event) => this.handleChangeFor(event, "description")}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+    return (
+      <>
+        <h3>Add an image:</h3>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Path:
+            <input
+              type="text"
+              value={this.state.path}
+              onChange={(event) => this.handleChangeFor(event, "path")}
+            />
+          </label>
+          <label>
+            Description:
+            <input
+              type="text"
+              value={this.state.description}
+              onChange={(event) => this.handleChangeFor(event, "description")}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
       </>
     );
   }

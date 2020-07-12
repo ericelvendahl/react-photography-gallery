@@ -15,6 +15,24 @@ const pool = new pg.Pool({
   idleTimeoutMillis: 30000,
 });
 
+// DELETE
+galleryRouter.delete("/:id", (req, res) => {
+    console.log(
+      `Server: in galleryRouter DELETE. req.body.id is ${req.params.id} `
+    );
+    const queryString = `DELETE FROM gallery_items WHERE id=${req.params.id};`;
+    pool
+      .query(queryString)
+      .then((responses) => {
+        console.log(`Server: delete successful. responses is ${responses}`);
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.log(`Server: Error:`, err);
+        res.sendStatus(500);
+      });
+  });
+
 // GET
 galleryRouter.get("/", (req, res) => {
   console.log(
@@ -40,11 +58,7 @@ galleryRouter.get("/", (req, res) => {
 // POST
 galleryRouter.post("/", (req, res) => {
     console.log(
-      `Server: in GalleryRouter POST. req.body is ${req.body} res.body is ${res.body}. req.body.notes is ${req.body.notes}`
-    );
-    console.log(
-      `${req.body.name}, ${req.body.gender}, ${req.body.age}, ${req.body.ready_for_transfer}, ${req.body.notes}`
-    );
+      `Server: in GalleryRouter POST.`);
     let queryString = `INSERT INTO "gallery_items" ("path", "description")
                       VALUES ('${req.body.path}', '${req.body.description}');`;
     pool
