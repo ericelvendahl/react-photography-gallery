@@ -13,12 +13,13 @@ class GalleryItem extends Component {
     let theyAreSure = window.confirm(
       "Are you sure you want to remove this picture?"
     );
+    let theRefresher = this.props.refreshData;
     if (theyAreSure) {
       console.log("They are sure");
       Axios.delete("/gallery/" + this.props.thisItem.id)
         .then(function response(response) {
           console.log(`delete successful`);
-          this.props.refreshData();
+          theRefresher();
         })
         .catch(function (error) {
           console.log("Delete failed with error", error);

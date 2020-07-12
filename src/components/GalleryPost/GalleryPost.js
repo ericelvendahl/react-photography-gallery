@@ -2,23 +2,17 @@ import React, { Component } from "react";
 import Axios from "axios";
 
 class GalleryPost extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      path: "",
-      description: "",
-    };
+  state = {
+    path: "",
+    description: "",
+  };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({
       path: event.target.value,
       description: event.target.value,
     });
-  }
+  };
 
   handleChangeFor = (event, propertyName) => {
     this.setState({
@@ -27,13 +21,13 @@ class GalleryPost extends Component {
   };
 
   handleSubmit = (event) => {
-    alert("A name was submitted: " + this.state.path + this.state.description);
     event.preventDefault();
 
     let dataToSend = {
       path: this.state.path,
       description: this.state.description,
     };
+    let theRefresher = this.props.refreshData;
     Axios.post("/gallery/", dataToSend)
       .then(function (response) {
         console.log(
@@ -43,23 +37,29 @@ class GalleryPost extends Component {
       })
       .then(function (response) {
         console.log("POST successful");
-        this.props.refreshData();
+        theRefresher();
         console.log(JSON.stringify(this.props));
       })
       .catch(function (error) {
         console.log(`Error in POST is `, error);
       });
+    this.props.refreshData();
+    /// - clear inputs after submission
+    this.setState({
+      path: "",
+      description: "",
+    });
+  };
 
-    /// - uncomment to clear inputs after submission... maybe do POST above this line
-    // this.setState({
-    //   path: "",
-    //   description: "",
-    // });
+  refreshClicked = () => {
+    this.props.refreshData();
+    console.log("Refresh clicked");
   };
 
   render() {
     return (
       <>
+        <button onClick={this.refreshClicked}>Refreash</button>
         <h3>Add an image:</h3>
         <form onSubmit={this.handleSubmit}>
           <label>
