@@ -70,7 +70,8 @@ galleryRouter.post("/", (req, res) => {
       console.log(`Error is ${err}`);
       res.sendStatus(500);
     });
-});
+}); // end POST route
+
 // PUT Route for description editing
 galleryRouter.put("/description/:id/", (req, res) => {
   console.log(req.params);
