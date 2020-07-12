@@ -39,7 +39,7 @@ galleryRouter.get("/", (req, res) => {
     `Server: in galleryRouter GET. req.body is ${JSON.stringify(req.body)}`
   );
 
-  let queryString = `SELECT * FROM "gallery_items";`;
+  let queryString = `SELECT * FROM "gallery_items" ORDER BY "id";`;
   pool
     .query(queryString)
     .then((result) => {
