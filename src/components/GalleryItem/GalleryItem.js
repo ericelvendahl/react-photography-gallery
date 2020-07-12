@@ -92,11 +92,11 @@ class GalleryItem extends Component {
   render() {
     return (
       <div className="image-area">
-        <div onClick={this.imageClick}>
+        <div onClick={this.imageClick} width="60%" max-width="60%" display="inline-block">
           {this.state.displayImage ? (
-            <img src={this.props.thisItem.path} alt="Gallery"></img>
+            <img src={this.props.thisItem.path} alt="Gallery" width="60%"></img>
           ) : (
-            <h2>{this.props.thisItem.description}</h2>
+            <h3>{this.props.thisItem.description}</h3>
           )}
         </div>
         <h3>Likes: {this.state.likes}</h3>
